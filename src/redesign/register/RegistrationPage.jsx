@@ -307,7 +307,7 @@ class RegistrationPage extends React.Component {
           let emailErrorSuggestion = null;
 
           const [username, domainName] = value.split('@');
-          const suggestion = getLevenshteinSuggestion(domainName, COMMON_VALID_EMAIL_DOMAINS);
+          let suggestion = getLevenshteinSuggestion(domainName, COMMON_VALID_EMAIL_DOMAINS);
 
           // Check if email address is invalid. If we have a suggestion for invalid email provide that along with
           // error message.
@@ -315,23 +315,28 @@ class RegistrationPage extends React.Component {
             errors.email = intl.formatMessage(messages['email.invalid.format.error']);
             emailErrorSuggestion = suggestion ? `${username}@${suggestion}` : null;
           } else {
+            const hasMultipleSubdomains = value.match(/\./g).length > 1;
             const [serviceLevelDomain, topLevelDomain] = domainName.split('.');
             const tldSuggestion = getLevenshteinSuggestion(topLevelDomain, DEFAULT_TOP_LEVEL_DOMAINS, 2);
             const serviceSuggestion = getLevenshteinSuggestion(serviceLevelDomain, DEFAULT_SERVICE_PROVIDER_DOMAINS, 2);
 
-            if (tldSuggestion) {
+            if (!hasMultipleSubdomains && tldSuggestion) {
               emailErrorSuggestion = suggestion ? `${username}@${suggestion}` : `${username}@${serviceSuggestion || serviceLevelDomain}.${tldSuggestion}`;
             } else if (serviceSuggestion) {
               borderClass = 'yellow-border';
               emailWarningSuggestion = suggestion ? `${username}@${suggestion}` : `${username}@${serviceSuggestion}.${topLevelDomain}`;
-            } else if (suggestion) {
+            }
+            // update the suggestion to use edit distance of 3 (since email is valid, we don't need to cater the
+            // missing dot between service level and top level domains)
+            suggestion = getLevenshteinSuggestion(domainName, COMMON_VALID_EMAIL_DOMAINS, 3);
+            if (suggestion) {
               // If both TLD and service level domain are correct and we have a suggestion from common email domains,
               // give preference to that choice.
               borderClass = 'yellow-border';
               emailWarningSuggestion = `${username}@${suggestion}`;
             }
 
-            if (tldSuggestion) {
+            if (!hasMultipleSubdomains && tldSuggestion) {
               errors.email = intl.formatMessage(messages['email.invalid.format.error']);
             } else if (payload && statusCode !== 403) {
               this.props.fetchRealtimeValidations(payload);

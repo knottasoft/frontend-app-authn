@@ -35,7 +35,7 @@ export const GENDER_OPTIONS = ['', 'f', 'm', 'o'];
 export const FORM_FIELDS = ['name', 'email', 'password', 'username', 'country'];
 
 export const COMMON_VALID_EMAIL_DOMAINS = [
-  'edx.org', 'hotmail.com', 'yahoo.com', 'outlook.com', 'live.com', 'gmail.com',
+  'edx.org', 'aol.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'live.com', 'gmail.com',
 ];
 
 export const DEFAULT_SERVICE_PROVIDER_DOMAINS = ['yahoo', 'hotmail', 'live', 'outlook', 'gmail', 'edx'];
