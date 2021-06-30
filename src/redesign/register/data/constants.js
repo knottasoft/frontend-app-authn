@@ -38,7 +38,7 @@ export const COMMON_VALID_EMAIL_DOMAINS = [
   'edx.org', 'aol.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'live.com', 'gmail.com',
 ];
 
-export const DEFAULT_SERVICE_PROVIDER_DOMAINS = ['yahoo', 'hotmail', 'live', 'outlook', 'gmail', 'edx'];
+export const DEFAULT_SERVICE_PROVIDER_DOMAINS = ['yahoo', 'hotmail', 'live', 'outlook', 'gmail'];
 
 export const DEFAULT_TOP_LEVEL_DOMAINS = [
   'aaa', 'aarp', 'abarth', 'abb', 'abbott', 'abbvie', 'abc', 'able', 'abogado', 'abudhabi', 'ac', 'academy',

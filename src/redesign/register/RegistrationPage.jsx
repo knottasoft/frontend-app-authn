@@ -321,10 +321,18 @@ class RegistrationPage extends React.Component {
             const serviceSuggestion = getLevenshteinSuggestion(serviceLevelDomain, DEFAULT_SERVICE_PROVIDER_DOMAINS, 2);
 
             if (!hasMultipleSubdomains && tldSuggestion) {
-              emailErrorSuggestion = suggestion ? `${username}@${suggestion}` : `${username}@${serviceSuggestion || serviceLevelDomain}.${tldSuggestion}`;
+              if (DEFAULT_SERVICE_PROVIDER_DOMAINS.includes(serviceSuggestion || serviceLevelDomain)) {
+                emailErrorSuggestion = `${username}@${serviceSuggestion || serviceLevelDomain}.com`;
+              } else {
+                emailErrorSuggestion = suggestion ? `${username}@${suggestion}` : `${username}@${serviceSuggestion || serviceLevelDomain}.${tldSuggestion}`;
+              }
             } else if (serviceSuggestion) {
               borderClass = 'yellow-border';
-              emailWarningSuggestion = suggestion ? `${username}@${suggestion}` : `${username}@${serviceSuggestion}.${topLevelDomain}`;
+              if (DEFAULT_SERVICE_PROVIDER_DOMAINS.includes(serviceSuggestion || serviceLevelDomain)) {
+                emailWarningSuggestion = `${username}@${serviceSuggestion || serviceLevelDomain}.com`;
+              } else {
+                emailWarningSuggestion = suggestion ? `${username}@${suggestion}` : `${username}@${serviceSuggestion}.${topLevelDomain}`;
+              }
             }
             // update the suggestion to use edit distance of 3 (since email is valid, we don't need to cater the
             // missing dot between service level and top level domains)
