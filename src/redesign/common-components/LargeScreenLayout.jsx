@@ -9,7 +9,7 @@ const LargeScreenLayout = () => (
   <div className="container row p-0 m-0 large-screen-container">
     <div className="col-md-9 p-0 screen-header">
       <Hyperlink destination={getConfig().MARKETING_SITE_BASE_URL}>
-        <Image alt="edx" className="logo position-absolute" src={getConfig().LOGO_WHITE_URL} />
+        <Image alt="edx" className="logo" src={getConfig().LOGO_WHITE_URL} />
       </Hyperlink>
       <LargeScreenLeftLayout />
     </div>
