@@ -21,6 +21,10 @@ export function getLevenshteinSuggestion(word, knownWords, similarityThreshold =
 }
 
 export function getSuggestionForInvalidEmail(domain, username) {
+  if (!domain) {
+    return null;
+  }
+
   const defaultDomains = ['yahoo', 'aol', 'hotmail', 'live', 'outlook', 'gmail'];
   const suggestion = getLevenshteinSuggestion(domain, COMMON_EMAIL_PROVIDERS);
 
