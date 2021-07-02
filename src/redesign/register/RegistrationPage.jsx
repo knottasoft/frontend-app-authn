@@ -12,9 +12,9 @@ import {
   injectIntl, intlShape, getCountryList, getLocale, FormattedMessage,
 } from '@edx/frontend-platform/i18n';
 import {
-  Alert, Form, Hyperlink, StatefulButton,
+  Alert, Form, Hyperlink, StatefulButton, Icon,
 } from '@edx/paragon';
-import { Error } from '@edx/paragon/icons';
+import { Error, Close } from '@edx/paragon/icons';
 
 import {
   clearUsernameSuggestions, registerNewUser, resetRegistrationForm, fetchRealtimeValidations,
@@ -41,7 +41,7 @@ import {
   DEFAULT_STATE, PENDING_STATE, REGISTER_PAGE, VALID_EMAIL_REGEX, LETTER_REGEX, NUMBER_REGEX,
 } from '../data/constants';
 import {
-  getTpaProvider, getTpaHint, getAllPossibleQueryParam, setSurveyCookie,
+  getTpaProvider, getTpaHint, getAllPossibleQueryParam, setSurveyCookie, setCookie,
 } from '../data/utils';
 import CountryDropdown from './CountryDropdown';
 import { getLevenshteinSuggestion, getSuggestionForInvalidEmail } from './utils';
@@ -398,7 +398,7 @@ class RegistrationPage extends React.Component {
   renderEmailFeedback() {
     if (this.state.emailErrorSuggestion) {
       return (
-        <Alert variant="danger" onClose={this.handleOnClose} dismissible className="pt-2 pb-2 mt-2" icon={Error}>
+        <Alert variant="danger" className="email-error-alert" icon={Error}>
           <span className="small">
             {this.props.intl.formatMessage(messages['did.you.mean.alert.text'])}{' '}
             <Alert.Link
@@ -407,7 +407,7 @@ class RegistrationPage extends React.Component {
               onClick={e => { this.handleSuggestionClick(e, this.state.emailErrorSuggestion); }}
             >
               {this.state.emailErrorSuggestion}
-            </Alert.Link>?
+            </Alert.Link>?<Icon src={Close} className="alert-close" onClick={this.handleOnClose} tabIndex="0" />
           </span>
         </Alert>
       );
@@ -419,6 +419,7 @@ class RegistrationPage extends React.Component {
           <Alert.Link
             href="#"
             name="email"
+            className="email-warning-alert-link"
             onClick={e => { this.handleSuggestionClick(e, this.state.emailWarningSuggestion); }}
           >
             {this.state.emailWarningSuggestion}
@@ -482,9 +483,10 @@ class RegistrationPage extends React.Component {
 
     if (this.props.registrationResult.success) {
       setSurveyCookie('register');
-      window.optimizely = window.optimizely || [];
+      setCookie(getConfig().REGISTER_CONVERSION_COOKIE_NAME, true);
 
       // Fire optimizely events
+      window.optimizely = window.optimizely || [];
       window.optimizely.push({
         type: 'event',
         eventName: 'authn-register-conversion',
@@ -601,7 +603,7 @@ class RegistrationPage extends React.Component {
               handleChange={(value) => this.setState({ country: value })}
               errorCode={this.state.errorCode}
             />
-            <div id="honor-code" className="micro text-muted mt-small">
+            <div id="honor-code" className="micro text-muted mt-4">
               <FormattedMessage
                 id="register.page.terms.of.service.and.honor.code"
                 defaultMessage="By creating an account, you agree to the {tosAndHonorCode} and you acknowledge that {platformName} and each

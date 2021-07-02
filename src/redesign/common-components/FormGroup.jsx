@@ -21,7 +21,7 @@ const FormGroup = (props) => {
   };
 
   return (
-    <Form.Group controlId={props.name} className="mb-4" isInvalid={props.errorMessage !== ''}>
+    <Form.Group controlId={props.name} className={props.className} isInvalid={props.errorMessage !== ''}>
       <Form.Control
         as={props.as}
         type={props.type}
@@ -74,6 +74,7 @@ FormGroup.defaultProps = {
   trailingElement: null,
   type: 'text',
   children: null,
+  className: '',
 };
 
 FormGroup.propTypes = {
@@ -93,6 +94,7 @@ FormGroup.propTypes = {
   type: PropTypes.string,
   value: PropTypes.string.isRequired,
   children: PropTypes.element,
+  className: PropTypes.string,
 };
 
 export default FormGroup;
